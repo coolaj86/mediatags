@@ -1,4 +1,6 @@
 #!/bin/bash
+set -e
+set -u
 
 CURDIR=`pwd`
 
@@ -32,10 +34,13 @@ function build_jhead {
 #
 function build_taglib {
   # Note taglib_config.h
-  svn co -r 1221631 svn://anonsvn.kde.org/home/kde/trunk/kdesupport/taglib taglib
-  svn up -r 1221631 
+  if [ ! -d "taglib/.git" ]
+  then
+    git clone git://github.com/taglib/taglib.git
+  fi
   mkdir -p taglib/build
   cd taglib/build
+    git checkout stable
     cmake ..
     make
     sudo make install
@@ -148,7 +153,7 @@ function build_libjson {
   then
     unzip libjson_7.0.1.zip
     # fix permissions error
-    chmod a+rx Source/JSONDefs
+    chmod a+rx -R libjson/Source/JSONDefs
   fi
   cd libjson
     make
@@ -179,10 +184,12 @@ function build_exiv2 {
 #
 function build_fontconfig {
   git clone git://anongit.freedesktop.org/fontconfig
-  git checkout 2.8.0
   cd fontconfig
+    git checkout 2.8.0
     ./autogen.sh
     make
+    sudo make install || true
+    ldconfig || true
     sudo make install
   cd -
 }
@@ -229,15 +236,15 @@ function build_poppler_data {
   cd -
 }
 
-#build_jhead
-build_taglib
-build_atomicparsley_svn
-#build_atomicparsley_hg
-#build_atomicparsley_hg_tar
-build_mhash
-build_libb64
-build_libjson
-build_exiv2
-build_fontconfig
+##build_jhead
+#build_taglib
+#build_atomicparsley_svn
+##build_atomicparsley_hg
+##build_atomicparsley_hg_tar
+#build_mhash
+#build_libb64
+#build_libjson
+#build_exiv2
+#build_fontconfig
 build_poppler
 build_poppler_data
