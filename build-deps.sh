@@ -216,6 +216,11 @@ function build_poppler {
     make
     sudo make install
   cd -
+  cd poppler-0.16.2
+    sudo cp -a goo /usr/local/include/poppler/
+    sudo cp -a poppler/*.h /usr/local/include/poppler/
+    sudo cp -a build/poppler/*.h /usr/local/include/poppler/
+  cd -
 }
 
 function build_poppler_data {
@@ -237,14 +242,14 @@ function build_poppler_data {
 }
 
 ##build_jhead
-#build_taglib
-#build_atomicparsley_svn
+build_taglib
+build_atomicparsley_svn
 ##build_atomicparsley_hg
 ##build_atomicparsley_hg_tar
-#build_mhash
-#build_libb64
-#build_libjson
-#build_exiv2
-#build_fontconfig
+build_mhash
+build_libb64
+build_libjson
+build_exiv2
+build_fontconfig
 build_poppler
 build_poppler_data
