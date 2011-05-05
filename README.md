@@ -19,10 +19,15 @@ Please report issues to the [coolaj86's branch](https://github.com/coolaj86/mtag
 Instalation
 ====
 
+Binaries are available for the following architectures and systems
+
+  * x86 / Ubuntu Linux
+  * armv7a / Linaro
+
     make deps
     make mediatags
 
-dependencies
+compile-time dependencies
 ---
 
 The following dependencies will be built (because the ones your package manager provides may or may not be suitable)
