@@ -153,7 +153,7 @@ function build_libjson {
   then
     unzip libjson_7.0.1.zip
     # fix permissions error
-    chmod a+rx -R libjson/Source/JSONDefs
+    chmod -R a+rx libjson/Source/JSONDefs
   fi
   cd libjson
     make
