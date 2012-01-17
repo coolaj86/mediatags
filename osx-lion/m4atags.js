@@ -45,8 +45,11 @@
       }
 
       art.push({
+          // TODO figure out if this is a constant 16 bytes off, 
+          // or variable based on the embedded image type
           start: parseInt(match[1], 10) + 16
-          // TODO figure out how far off the end is
+          // the last two bytes of the tested jpeg are ff d9
+          // suggesting that the end is exactly correct
         , end: parseInt(match[3], 10)
       });
 
