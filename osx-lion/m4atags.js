@@ -1,10 +1,19 @@
 #!/usr/bin/env node
-// AtomicParsley "/Users/coolaj86/TODO2/coolaj86/Music/iTunes/iTunes Media/Music/Owl City/All Things Bright and Beautiful/12 How I Became the Sea.m4a" --textdata > ap-output.tags.txt
-// AtomicParsley "/Users/coolaj86/TODO2/coolaj86/Music/iTunes/iTunes Media/Music/Owl City/All Things Bright and Beautiful/12 How I Became the Sea.m4a" --test > ap-output.atoms.txt
-// AtomicParsley "/Users/coolaj86/TODO2/coolaj86/Music/iTunes/iTunes Media/Music/Owl City/All Things Bright and Beautiful/12 How I Became the Sea.m4a" --test | grep mdat
-// /Atom mdat @ (\d+) of size: (\d+), ends @ (\d+)/
+// AtomicParsley "12-how-i-became-the-sea.m4a" --textdata > ap-output.tags.txt
+// AtomicParsley "12-how-i-became-the-sea.m4a" --test > ap-output.atoms.txt
+// AtomicParsley "12-how-i-became-the-sea.m4a" --test | grep mdat
 
 // TODO how are md5sums calculated in the C code? why are they different here?
+
+// arguments to maybe support in the future:
+// --with-md5sum
+// --with-sha1sum
+// --hash=[md5sum,sha1sum,sha224,sha256,sha384,sha512]
+// --extract-art
+// --extract-art-to=
+// --verbose
+// --literal
+// --help
 (function () {
   "use strict";
 
@@ -32,7 +41,8 @@
     match = stdout.match(covrRegExp);
 
     if (!match) {
-      console.log('No Cover Art');
+      console.log(JSON.stringify(new Error('No Cover Art')));
+      return;
     }
 
     lines = match[0].split('\n');
@@ -52,10 +62,9 @@
           // suggesting that the end is exactly correct
         , end: parseInt(match[3], 10)
       });
-
-      console.log('cover art:', match[1], match[3]);
     });
 
+    // TODO hex hash
     art.forEach(function (a) {
       fs.read(fd, new Buffer(a.end - a.start), 0, a.end - a.start, a.start, function (err, len, buf) {
         fs.writeFileSync('something.jpg', buf, 'binary');
@@ -79,13 +88,13 @@
     getArt(err, stdout, stderr);
 
     if (!match) {
-      console.log(JSON.stringify({ error: { message: "Could not find mdat atom" } }));
+      console.log(JSON.stringify(new Error("Could not find mdat atom")));
       return;
     }
 
     // parseInt - nodejs issue #2554
     // +8 - AtomicParsley simply counts wrong
-    start = parseInt(match[1], 10) + 16;
+    start = parseInt(match[1], 10) + 5;
     size = parseInt(match[2], 10);
     end = start + size - 16; //parseInt(match[3], 10);
 
@@ -102,7 +111,7 @@
     });
   }
 
-  function parseToJson(err, txt) {
+  function parseToJson(err, stdout, stderr) {
     var lines
       , line
       , match
@@ -114,21 +123,26 @@
       ;
 
     if (err) {
+      err.file = fullpath;
+      err.stderr = stderr;
       console.log(JSON.stringify(err));
+      //console.error(fullpath);
+      //console.error(stderr);
       return;
     }
 
     result = {};
-    lines = txt.split('\n');
+    lines = stdout.split('\n');
 
     for (i = 0; i < lines.length; i += 1) {
       line = lines[i];
       match = line.match(/Atom\s*"(.*?)"\s*(\[.*?\]){0,1}\s*contains:\s*(.*)/);
+
       if (!match) {
         result[key] += '\n' + line;
         continue;
       }
-      //console.log(match);
+
       key = match[1];
       key2 = match[2];
       val = match[3];
@@ -136,6 +150,7 @@
         //key = key + ' ' + key2;
         key = key + key2.replace('com.apple.iTunes;', '');
       }
+
       result[key] = val;
     }
 
@@ -143,7 +158,7 @@
       result.covr = true;
     }
 
-    console.log(JSON.stringify(result, null, '  '));
+    console.log(JSON.stringify(result));
   }
 
   fs.open(fullpath, 'r', function (err, _fd) {
@@ -154,7 +169,9 @@
 
     fd = _fd;
   });
-  exec('AtomicParsley \'' + fullpath + '\' --textdata', parseToJson);
+
+  // can't escape a single quoted string -- must break out, then escape, then go back in
+  exec('AtomicParsley \'' + fullpath.replace(/'/g, "'\\''") + '\' --textdata', parseToJson);
   //exec('AtomicParsley \'' + fullpath + '\' --test', getMd5sum);
   //fs.readFile(fullpath, 'utf-8', parseToJson);
 }());
