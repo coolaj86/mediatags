@@ -73,4 +73,10 @@ echo "Installing to /usr/local/bin"
 echo ""
 rsync -av ${TMPD}/ /usr/local/bin/ 2>/dev/null || sudo rsync -av ${TMPD}/ /usr/local/bin/
 
+echo "WAIT!"
+echo ""
+echo "Your not done yet, you still need to install poppler for pdftags"
+echo "sudo apt-get install poppler-data # Ubuntu / Debian Linux"
+echo "brew install poppler # OS X Lion"
+
 rm -rf "${TMPD}"
