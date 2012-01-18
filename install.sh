@@ -11,7 +11,7 @@ then
 elif [ "`uname -a | grep -i 'linux'`" ]
 then
   echo "Linux"
-  if [ "`arch` | grep arm" ]
+  if [ "`arch | grep arm`" ]
   then
     echo "ARM"
     PLAT="linux-ubuntu-natty-armv7a-bins"
