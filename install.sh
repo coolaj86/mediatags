@@ -8,7 +8,7 @@ if [ "`uname -a | grep -i 'darwin'`" ]
 then
   echo "OS X"
   PLAT="osx-lion"
-elif [ "`cat /etc/issue | grep -i 'linux'`" ]
+elif [ "`uname -a | grep -i 'linux'`" ]
 then
   echo "Linux"
   if [ "`arch` | grep arm" ]
