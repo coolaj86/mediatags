@@ -20,7 +20,8 @@
   var fs = require('fs')
     , exec = require('child_process').exec
     , crypto = require('crypto')
-    , fullpath = process.argv[2]
+    , args
+    , fullpath
     , mdatRegExp = /Atom mdat @ (\d+) of size: (\d+), ends @ (\d+)/
     , covrRegExp = /Atom covr @ \d+ of size: \d+, ends @ \d+\n\s*(Atom data @ \d+ of size: \d+, ends @ \d+\n*\s*)+/
     , covrDataRegExp = /Atom data @ (\d+) of size: (\d+), ends @ (\d+)/
@@ -161,6 +162,15 @@
     console.log(JSON.stringify(result));
   }
 
+  args = process.argv.slice(2);
+  args.some(function (arg) {
+    if (arg.match(/^[^-]/)) {
+      fullpath = arg;
+      return true;
+    }
+  });
+
+  /*
   fs.open(fullpath, 'r', function (err, _fd) {
     if (err) {
       console.log(JSON.stringify(err));
@@ -169,6 +179,7 @@
 
     fd = _fd;
   });
+  */
 
   // can't escape a single quoted string -- must break out, then escape, then go back in
   exec('AtomicParsley \'' + fullpath.replace(/'/g, "'\\''") + '\' --textdata', parseToJson);
