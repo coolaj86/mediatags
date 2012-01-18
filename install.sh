@@ -65,7 +65,7 @@ then
 else
   echo "Retrieving m4atags"
   curl ${COPTS} "${MURL}/m4atags" -o "${TMPD}/m4atags"
-  chmod a+x "${TMPD}/m4atags.js"
+  chmod a+x "${TMPD}/m4atags"
 fi
 
 echo ""
