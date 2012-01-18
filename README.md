@@ -16,16 +16,45 @@ Date: 2011-01-27
 
 Please report issues to the [coolaj86's branch](https://github.com/coolaj86/mtags).
 
-Instalation
+Installation
 ====
 
-Binaries are available for the following architectures and systems
+    curl -L 'https://raw.github.com/coolaj86/mtags/master/install.sh' | sh 
 
-  * x86 / Ubuntu Linux
-  * armv7a / Linaro
+Works for
+
+  * Ubuntu Linux
+  * Mac OS X Lion
+  * Linaro (Ubuntu on ARM)
+
+Usage
+===
+
+    m4atags /path/to/file.m4a --literal --extract-art-to=/path/to/art/
+    id3tags /path/to/file.mp3 --literal --extract-art-to=/path/to/art/
+    imgtags /path/to/file.jpg --literal=e
+    pdftags /path/to/file.pdf --literal
+
+All possible arguments are as follows (not all apply to each "footags" type): 
+
+  * `m4atags` and `id3tags`
+    * `--help` - print the usage
+    * `--literal` - print the literal ID3 tags or M4A atoms
+    * `--literal=e|i|x` - print the literal exif, exiv, or xml tags
+    * `--verbose` - print the tree of tags or atoms with start, and end byte ranges
+    * `--with-md5sum` and `--with-sha1sum` - hash the data (not the whole file)
+    * `--extract-art` - include base64 encoded thumbnails as JSON
+    * `--extract-art-to=/path/to/art` - extract thumbnails to a path
+
+Compiling from Source
+===
+
+Running `build.{{platform}}.sh` should handle the platform-specific dependencies.
 
     make deps
     make mediatags
+
+For OS X you'll want to see `README.OSX.md` for some workarounds.
 
 compile-time dependencies
 ---
@@ -53,14 +82,12 @@ You may need to install build system tools as follows
       libfreetype6-dev \
       libtool
 
-Usage
+Detailed Usage
 ====
 
 Version 0.34
 
-Warning: This is a work in progress things can change rapidly
-
-  0. Current support is for m4atags, id3tagsi, imgtags and pdftags
+  0. Current support is for m4atags, id3tags, imgtags and pdftags
   0. m4atags is dependent on AtomicParsley and mhash (both are bundled)
   0. id3tags is dependent on TagLib and libjson (both are bundled)
   0. imgtags is dependent on libexiv2 and libjson (both are bundled)
