@@ -14,6 +14,9 @@
 #include <string.h>
 #include <getopt.h>
 #include <unistd.h>
+#ifdef DARWIN
+  #include <libgen.h>
+#endif
 #include <errno.h>
 #include <signal.h>
 #include <wchar.h>

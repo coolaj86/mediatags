@@ -67,7 +67,7 @@ function build_atomicparsley_hg {
 function build_atomicparsley_hg_tar {
   APHGVER="3b67584ebdb2"
   APHGPKG="wez-atomicparsley"
-  if [ ! -f "atomicparsley-${APHGVER}.tar.gz" ]
+  if [ ! -f "${APHGPKG}-${APHGVER}.tar.gz" ]
   then
     curl https://bitbucket.org/wez/atomicparsley/get/${APHGVER}.tar.gz -o ${APHGPKG}-${APHGVER}.tar.gz
   fi
@@ -247,14 +247,14 @@ function build_poppler_data {
 }
 
 ##build_jhead
-#build_taglib
+build_taglib
 ##build_atomicparsley_svn
 build_atomicparsley_hg
-#build_atomicparsley_hg_tar
-#build_mhash
-#build_libb64
-#build_libjson
-#build_exiv2
-#build_fontconfig
-#build_poppler
-#build_poppler_data
+##build_atomicparsley_hg_tar
+build_mhash
+build_libb64
+build_libjson
+build_exiv2
+build_fontconfig
+build_poppler
+build_poppler_data
