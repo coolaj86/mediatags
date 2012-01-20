@@ -3,12 +3,10 @@ rm -rf "/tmp/mtags.*"
 
 TMPD=`mktemp -d /tmp/mtags.XXXX` || echo 'failed to create tmpdir'
 PWD=`pwd`
-WORKAROUND=''
 
 if [ "`uname -a | grep -i 'darwin'`" ]
 then
   echo "OS X"
-  WORKAROUND='TRUE'
   PLAT="osx-lion"
 elif [ "`uname -a | grep -i 'linux'`" ]
 then
@@ -40,6 +38,10 @@ echo ""
 MURL="${MURL}/${PLAT}"
 COPTS='--progress-bar --location --max-redirs 3'
 
+echo "Retrieving m4atags"
+curl ${COPTS} "${MURL}/m4atags" -o "${TMPD}/m4atags"
+chmod a+x "${TMPD}/m4atags"
+
 echo "Retrieving id3tags"
 curl ${COPTS} "${MURL}/id3tags" -o "${TMPD}/id3tags"
 chmod a+x "${TMPD}/id3tags"
@@ -51,22 +53,6 @@ chmod a+x "${TMPD}/pdftags"
 echo "Retrieving imgtags"
 curl ${COPTS} "${MURL}/imgtags" -o "${TMPD}/imgtags"
 chmod a+x "${TMPD}/imgtags"
-
-if [ "${WORKAROUND}" ]
-then
-  echo "Retrieving AtomicParsley"
-  curl ${COPTS} "${MURL}/AtomicParsley" -o "${TMPD}/AtomicParsley"
-  chmod a+x "${TMPD}/AtomicParsley"
-
-  echo "Retrieving m4atags"
-  curl ${COPTS} "${MURL}/m4atags.js" -o "${TMPD}/m4atags.js"
-  chmod a+x "${TMPD}/m4atags.js"
-  ln -s m4atags.js "${TMPD}/m4atags"
-else
-  echo "Retrieving m4atags"
-  curl ${COPTS} "${MURL}/m4atags" -o "${TMPD}/m4atags"
-  chmod a+x "${TMPD}/m4atags"
-fi
 
 echo ""
 echo "Installing to /usr/local/bin"
