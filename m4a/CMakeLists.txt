@@ -6,7 +6,7 @@ SET(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -Wall -Werror -fstack-protector-all")
 SET(APO ${m4atags_SOURCE_DIR}/../deps/wez-atomicparsley/src)
 
 IF(APPLE)
-  #${CMAKE_SYSTEM_NAME} MATCHES "Darwin")
+#IF(APPLE AND ${CMAKE_SYSTEM_NAME} MATCHES "Darwin")
   SET(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -framework IOKit -framework Cocoa -framework Foundation")
   SET(LINK_FLAGS "${LINK_FLAGS} -framework IOKit -framework Cocoa -framework Foundation")
   add_definitions(-DDARWIN)

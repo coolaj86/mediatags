@@ -7,26 +7,6 @@ Prereqs
 Fixes
 ===
 
-m4atags / AtomicParsley
----
-
-There's currently no work-around to build the real `m4atags` from 
-source so there's a nodejs shim around AtomicParsely.
-
-  * md5sums aren't the same
-  * art output very nearly works (has a few trailing bytes that seem to work)
-
-Comment out AtomicParsley stuff at the bottom in `build-deps.sh`
-
-    brew install hg
-    hg clone https://bitbucket.org/wez/atomicparsley
-    cd atomicparsley/
-    autoconf & automake
-    ./configure  --disable-universal
-    make
-    make install
-    AtomicParsley 
-
 pdftags / poppler
 ---
 
@@ -62,6 +42,23 @@ _Bool has not been declared
 'basename' has not been declared
 ---
 
-id3/id3tagjson.cpp:
+id3/id3tagjson.cpp && m4a/m4atags.cpp;
 
     #include <libgen.h>
+
+Other Tips
+---
+
+How to tell wether a library was compiled 32-bit or 64-bit?
+
+OS X:
+
+    file /path/to/object.o
+
+CMake:
+
+I did a lot of `grep`ing through `hg clone https://bitbucket.org/sinbad/ogre` to half-figure out 
+the OS X framework includes and eventually got it right by trial and error.
+
+The errors about libraries not available for x86_64 had nothing to do with i386 or 32-bit vs 64-bit
+but rather that the CoreFoundation frameworks weren't being included
