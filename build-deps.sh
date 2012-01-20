@@ -214,9 +214,10 @@ function build_poppler {
   then
     tar xf poppler-0.16.2.tar.gz
   fi
-  mkdir -p poppler-0.16.2/build
-  cd poppler-0.16.2/build
-    cmake ..
+  #mkdir -p poppler-0.16.2/build
+  #cd poppler-0.16.2/build
+  cd poppler-0.16.2
+  ./configure --enable-xpdf-headers
     make
     sudo make install
   cd -
@@ -247,9 +248,9 @@ function build_poppler_data {
 
 ##build_jhead
 build_taglib
-build_atomicparsley_svn
-##build_atomicparsley_hg
-##build_atomicparsley_hg_tar
+#build_atomicparsley_svn
+#build_atomicparsley_hg
+build_atomicparsley_hg_tar
 build_mhash
 build_libb64
 build_libjson

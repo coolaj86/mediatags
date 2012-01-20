@@ -11,6 +11,7 @@ extern "C"
 }
 
 const char *TABSPACE = "    ";
+const char AUGIDENT[] = { 0xef, 0xbb, 0xbf, 'A', 't', 'o', 'm', '\0' };
 
 int m4a_display_json_tree(
     FILE *in,
@@ -39,7 +40,8 @@ int m4a_display_json_tree(
         //printf("%s", line);
 
         tok = strtok(line, " ");
-        if ((tok != NULL) && (strcmp(tok, "Atom") != 0)) continue;
+        if ((tok != NULL) && !((strcmp(tok, "Atom") == 0) ||
+            (strcmp(tok, AUGIDENT) == 0))) continue;
 
         i = 0;
         while (tok != NULL)
@@ -159,6 +161,20 @@ void m4a_stuff_backslash(char *inp, char *out)
             i++;
             prev = 'a';
         }
+        else if (inp[i] == '\r')
+        {
+            out[j++] = '\\';
+            out[j++] = 'r';
+            i++;
+            prev = 'a';
+        }
+        else if (inp[i] == '\n')
+        {
+            out[j++] = '\\';
+            out[j++] = 'n';
+            i++;
+            prev = 'a';
+        }
         else
         {
             out[j++] = inp[i++];
@@ -197,26 +213,30 @@ int m4a_display_json_tags(
     char pfx[512];
 
     int      nonstr = M4A_FALSE;
+    int      nodata = M4A_TRUE;
 
     fprintf(out, "\{\n");
     while ((lnsz = getline(&line, &len, in)) != -1) 
     {
         char *tok;
-        char *ptree[64];
+        char *ptree[512];
         int i, j;
-        char atom[128];
-        char value[256];
-        char sanitised[256];
+        char atom[512];
+        char value[5120];
+        char sanitised[5120];
 
         line[lnsz-1] = '\0';
 
+        if ((lnsz == 3) && (strncmp(AUGIDENT, line, 2) == 0)) continue;
         tok = strtok(line, " ");
 
         // Empty Line
         if (tok == NULL) continue;
+        nodata = M4A_FALSE;
 
         // Overflowing Value has \n in it
-        if ((tok != NULL) && (strcmp(tok, "Atom") != 0)) 
+        if ((tok != NULL) && !((strcmp(tok, "Atom") == 0) ||
+            (strcmp(tok, AUGIDENT) == 0)))
         {
             line[strlen(line)] = ' ';
             m4a_stuff_backslash(line, sanitised);
@@ -382,7 +402,7 @@ int m4a_display_json_tags(
     }
 
     pfx[0] = '\0';
-    if (!nonstr) strcpy(pfx, "\"");
+    if (!nonstr && !nodata) strcpy(pfx, "\"");
 
     if ((md5sum != NULL) || (sha1sum != NULL))
     {

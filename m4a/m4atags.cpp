@@ -40,6 +40,7 @@ extern "C"
 #include "util.h"
 */
 
+/*
 // For the old AP
 #include "AP_commons.h"
 #include "AtomicParsley.h"
@@ -47,6 +48,8 @@ extern "C"
 #include "AP_iconv.h"          
 #include "AtomicParsley_genres.h"  
 #include "APar_uuid.h"
+*/
+#include "AtomicParsley.h"
 
 
 #include "m4a_json.h"
@@ -198,7 +201,9 @@ inline int get_chksum(M4A_TAG_CFG *cfg, char *m4afile,
     {
          if (m4a_stream_chksum(m4afile, *md5sum, *sha1sum) != 0)
          {
-             fprintf(stderr, "Checksum failure exiting\n");
+             fprintf(stderr, "Checksum failure no mdat or unable to open file\n");
+             if (*md5sum != NULL)  *md5sum[0] = '\0';
+             if (*sha1sum != NULL) *sha1sum[0] = '\0';
              return 10;
          }
          return 0;
@@ -332,11 +337,11 @@ main (int argc, char **argv)
     }
 
     TestFileExistence(m4afile, true);
-    xmlInitEndianDetection();
+    //xmlInitEndianDetection();
     
     ExtractPaddingPrefs(NULL);
     
-    tree_display_only=true;
+    //tree_display_only=true;
     APar_ScanAtoms(m4afile);
     
     if (cfg.mode == M4A_MODE_LITERAL)
@@ -350,7 +355,7 @@ main (int argc, char **argv)
         char                       path[512];
 
 
-        openSomeFile(m4afile, true);
+        APar_OpenISOBaseMediaFile(m4afile, true);
         get_chksum(&cfg, m4afile, &md5sum, &sha1sum);
 
         if (cfg.art == M4A_TRUE)
@@ -397,12 +402,12 @@ main (int argc, char **argv)
         } 
         else if (metadata_style == ITUNES_STYLE) 
         {
-            APar_PrintDataAtoms(m4afile, NULL, 0, PRINT_DATA);
+            APar_Print_iTunesData(m4afile, NULL, 0, PRINT_DATA);
         }
         reset_io(&cfg);
         m4a_display_json_tags(
             cfg.str, stdout, md5sum, sha1sum, art, cnt, bfname);
-        openSomeFile(m4afile, false);
+        APar_OpenISOBaseMediaFile(m4afile, false);
     }
     else if (cfg.mode == M4A_MODE_VERBOSE)
     {
@@ -476,7 +481,7 @@ main (int argc, char **argv)
             }
 
             fputs ("{\n    \"@img\": [ ", out);
-            openSomeFile(m4afile, true);
+            APar_OpenISOBaseMediaFile(m4afile, true);
             cvr = m4a_get_atomidx((const char *) "covr", 1, 0);
             idx = parsedAtoms[cvr].NextAtomNumber;
             while (parsedAtoms[idx].AtomicLevel > parsedAtoms[cvr].AtomicLevel)
@@ -564,7 +569,7 @@ main (int argc, char **argv)
                 cnt++;
                 idx = parsedAtoms[idx].NextAtomNumber;
             }
-            openSomeFile(m4afile, false);
+            APar_OpenISOBaseMediaFile(m4afile, false);
             fputs (" ]\n}\n", out);
         }
     }
