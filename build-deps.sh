@@ -194,6 +194,10 @@ function build_fontconfig {
   cd -
 }
 
+function build_fontconfig_osx {
+  brew install fontconfig || true
+}
+
 
 
 #
