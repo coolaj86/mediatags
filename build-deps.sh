@@ -56,10 +56,10 @@ function build_atomicparsley_hg {
   # The current AP has cleaned up a few things we depended on
   # TODO make the switch
   
-  hg clone https://bitbucket.org/wez/atomicparsley
-  cd atomicparsley
+  hg clone https://bitbucket.org/wez/atomicparsley wez-atomicparsley
+  cd wez-atomicparsley
     ./autogen.sh
-    ./configure
+    ./configure --disable-universal # for OSX
     make
     sudo make install
   cd -
@@ -247,14 +247,14 @@ function build_poppler_data {
 }
 
 ##build_jhead
-build_taglib
-#build_atomicparsley_svn
-#build_atomicparsley_hg
-build_atomicparsley_hg_tar
-build_mhash
-build_libb64
-build_libjson
-build_exiv2
-build_fontconfig
-build_poppler
-build_poppler_data
+#build_taglib
+##build_atomicparsley_svn
+build_atomicparsley_hg
+#build_atomicparsley_hg_tar
+#build_mhash
+#build_libb64
+#build_libjson
+#build_exiv2
+#build_fontconfig
+#build_poppler
+#build_poppler_data
