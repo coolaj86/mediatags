@@ -47,7 +47,7 @@
     }
 
     lines = match[0].split('\n');
-    // lose the covr atom
+    // lose the covr atom (we want the array of data atoms)
     lines.shift();
     lines.forEach(function (line) {
       match = line.match(covrDataRegExp);
