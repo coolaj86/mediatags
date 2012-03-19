@@ -56,6 +56,10 @@ function build_atomicparsley_hg {
   # The current AP has cleaned up a few things we depended on
   # TODO make the switch
   
+  if [ -d "wez-atomicparsley" ]
+  then
+    return
+  fi
   hg clone https://bitbucket.org/wez/atomicparsley wez-atomicparsley
   cd wez-atomicparsley
     ./autogen.sh
@@ -183,13 +187,17 @@ function build_exiv2 {
 # fontconfig
 #
 function build_fontconfig {
+  if [ -d "fontconfig" ]
+  then
+    return
+  fi
   git clone git://anongit.freedesktop.org/fontconfig
   cd fontconfig
-    git checkout 2.8.0
+    git checkout 2.9.0
     ./autogen.sh
     make
     sudo make install || true
-    ldconfig || true
+    sudo ldconfig || true
     sudo make install
   cd -
 }
@@ -224,7 +232,6 @@ function build_poppler {
   cd poppler-0.16.2
     sudo cp -a goo /usr/local/include/poppler/
     sudo cp -a poppler/*.h /usr/local/include/poppler/
-    sudo cp -a build/poppler/*.h /usr/local/include/poppler/
   cd -
 }
 

@@ -24,6 +24,7 @@ Installation
 Works for
 
   * Ubuntu Linux
+    * build-essential mercurial subversion git autoconf
   * Mac OS X Lion
   * Linaro (Ubuntu on ARM)
 
@@ -54,7 +55,30 @@ Running `build.{{platform}}.sh` should handle the platform-specific dependencies
     make deps
     make mediatags
 
-For OS X you'll want to see `README.OSX.md` for some workarounds.
+Ubuntu
+---
+
+You'll need all of these installed
+
+    sudo apt-get update
+    sudo apt-get install \
+      build-essential \
+      subversion \
+      mercurial \
+      automake \
+      pkg-config \
+      libxml2-dev \
+      libexpat1-dev \
+      git \
+      cmake \
+      libfreetype6 \
+      libfreetype6-dev \
+      libtool
+
+OSX 
+---
+
+see `README.OSX.md`
 
 compile-time dependencies
 ---
