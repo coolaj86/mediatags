@@ -63,6 +63,7 @@ You'll need all of these installed
     sudo apt-get update
     sudo apt-get install \
       build-essential \
+      zip \
       subversion \
       mercurial \
       automake \
@@ -74,6 +75,10 @@ You'll need all of these installed
       libfreetype6 \
       libfreetype6-dev \
       libtool
+
+And you'll need to set the `pkg-config` path
+
+    export PKG_CONFIG_PATH=/usr/bin/pkg-config
 
 OSX 
 ---
@@ -96,11 +101,12 @@ The following dependencies will be built (because the ones your package manager 
 
 You may need to install build system tools as follows
 
-    sudo apt-get install \
-      build-essential \
+  XCode
+
+    brew install \
       subversion \
       mercurial \
-      git-core \
+      git \
       cmake \
       libfreetype6 \
       libfreetype6-dev \
