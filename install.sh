@@ -16,6 +16,7 @@ then
     echo "ARM"
     PLAT="linux-ubuntu-natty-armv7a-bins"
   elif [ "`arch | grep 64`" ]
+  then
     echo "x86_64"
     PLAT="linux-ubuntu-precise-x64-bins"    
   else
