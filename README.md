@@ -61,7 +61,7 @@ Ubuntu
 You'll need all of these installed
 
     sudo apt-get update
-    sudo apt-get install \
+    sudo apt-get install -y \
       build-essential \
       zip \
       subversion \

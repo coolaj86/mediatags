@@ -192,14 +192,15 @@ function build_fontconfig {
     return
   fi
   git clone git://anongit.freedesktop.org/fontconfig
-  cd fontconfig
+  pushd fontconfig
     git checkout 2.9.0
+    ./autogen.sh || true
     ./autogen.sh
     make
     sudo make install || true
     sudo ldconfig || true
     sudo make install
-  cd -
+  popd
 }
 
 function build_fontconfig_osx {
@@ -262,6 +263,7 @@ build_mhash
 build_libb64
 build_libjson
 build_exiv2
+export PKG_CONFIG_PATH=`which pkg-config`
 build_fontconfig
 build_poppler
 build_poppler_data
