@@ -15,8 +15,12 @@ then
   then
     echo "ARM"
     PLAT="linux-ubuntu-natty-armv7a-bins"
+  elif [ "`arch | grep 64`" ]
+  then
+    echo "x86_64"
+    PLAT="linux-ubuntu-precise-x64-bins"    
   else
-    echo "x86 / x86_64"
+    echo "x86"
     PLAT="linux-x86-bins"
   fi
 else
@@ -61,8 +65,12 @@ rsync -av ${TMPD}/ /usr/local/bin/ 2>/dev/null || sudo rsync -av ${TMPD}/ /usr/l
 
 echo "WAIT!"
 echo ""
-echo "Your not done yet, you still need to install poppler for pdftags"
-echo "sudo apt-get install poppler-data # Ubuntu / Debian Linux"
+echo "Your not done yet, you still need to install poppler for pdftags (and possibly exiv2)... and you may need to compile them from source"
+echo ""
+echo "sudo apt-get install -y poppler-data # Ubuntu / Debian Linux"
+echo "sudo apt-get install -y libexiv2-11"
+echo ""
 echo "brew install poppler # OS X Lion"
+echo ""
 
 rm -rf "${TMPD}"
