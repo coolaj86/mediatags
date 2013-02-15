@@ -14,12 +14,12 @@ Maintainer: coolaj86
 
 Date: 2011-01-27
 
-Please report issues to the [coolaj86's branch](https://github.com/coolaj86/mtags).
+Please report issues to the [coolaj86's branch](https://github.com/coolaj86/mediatags).
 
 Installation
 ====
 
-    curl -L 'https://raw.github.com/coolaj86/mtags/master/install.sh' | sh 
+    curl -L 'https://raw.github.com/coolaj86/mediatags/master/install.sh' | sh 
 
 Works for
 
