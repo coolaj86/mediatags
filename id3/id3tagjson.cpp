@@ -2,6 +2,10 @@
 #include <fstream>
 #include <string.h>
 #include <vector>
+#ifdef DARWIN
+  #include <libgen.h>
+#endif
+
 
 #include <taglib/tbytevector.h>
 #include <taglib/tstringlist.h>

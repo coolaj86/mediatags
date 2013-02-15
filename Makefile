@@ -32,7 +32,7 @@ deps:
 	./build-deps.sh
 
 clean_deps:
-	rm deps -rf
+	rm -rf deps
 
 clean:
 	rm -rf imgtags pdftags m4atags id3tags

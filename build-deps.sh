@@ -186,7 +186,7 @@ function build_exiv2 {
 #
 # fontconfig
 #
-function build_fontconfig {
+function get_fontconfig {
   if [ -d "fontconfig" ]
   then
     return
@@ -196,6 +196,10 @@ function build_fontconfig {
     git checkout 2.9.0
     ./autogen.sh || true
     ./autogen.sh
+  popd
+}
+function build_fontconfig {
+  pushd fontconfig
     make
     sudo make install || true
     sudo ldconfig || true
@@ -204,6 +208,7 @@ function build_fontconfig {
 }
 
 function build_fontconfig_osx {
+  # or true in case it's already installed
   brew install fontconfig || true
 }
 
@@ -235,6 +240,10 @@ function build_poppler {
     sudo cp -a poppler/*.h /usr/local/include/poppler/
   cd -
 }
+function build_poppler_osx {
+  # or true in case it's already installed
+  brew install poppler || true
+}
 
 function build_poppler_data {
   LPDVER="0.4.4"
@@ -264,6 +273,14 @@ build_libb64
 build_libjson
 build_exiv2
 export PKG_CONFIG_PATH=`which pkg-config`
-build_fontconfig
-build_poppler
+get_fontconfig
+get_poppler
+if [ -n `uname | grep -i darwin` ]
+then
+  build_fontconfig_osx
+  build_poppler_osx
+else
+  build_fontconfig
+  build_poppler
+fi
 build_poppler_data
