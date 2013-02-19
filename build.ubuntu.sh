@@ -11,6 +11,7 @@ sudo apt-get install -y --quiet \
   git-core \
   rsync \
   cmake \
+  libpoppler-dev \
   libjpeg-dev \
   zlib1g-dev \
   libpng12-dev \
