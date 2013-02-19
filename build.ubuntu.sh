@@ -1,6 +1,6 @@
 #!/bin/bash
 sudo apt-get update
-sudo apt-get install \
+sudo apt-get install -y --quiet \
   build-essential \
   subversion \
   mercurial \
@@ -9,6 +9,7 @@ sudo apt-get install \
   libxml2-dev \
   libexpat1-dev \
   git-core \
+  rsync \
   cmake \
   libfreetype6 \
   libfreetype6-dev \

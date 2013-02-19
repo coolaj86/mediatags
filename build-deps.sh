@@ -217,7 +217,7 @@ function build_fontconfig_osx {
 #
 # poppler
 #
-function build_poppler {
+function get_poppler {
   # TODO use the git repo instead
   # git clone git://git.freedesktop.org/git/poppler/poppler
   if [ ! -f "poppler-0.16.2.tar.gz" ]
@@ -228,17 +228,19 @@ function build_poppler {
   then
     tar xf poppler-0.16.2.tar.gz
   fi
+}
+function build_poppler {
   #mkdir -p poppler-0.16.2/build
   #cd poppler-0.16.2/build
-  cd poppler-0.16.2
+  pushd poppler-0.16.2
   ./configure --enable-xpdf-headers
     make
     sudo make install
-  cd -
-  cd poppler-0.16.2
-    sudo cp -a goo /usr/local/include/poppler/
-    sudo cp -a poppler/*.h /usr/local/include/poppler/
-  cd -
+  popd
+  pushd poppler-0.16.2
+    sudo rsync -a goo /usr/local/include/poppler/
+    sudo rsync -a poppler/*.h /usr/local/include/poppler/
+  popd
 }
 function build_poppler_osx {
   # or true in case it's already installed
