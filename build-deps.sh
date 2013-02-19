@@ -238,7 +238,7 @@ function build_poppler {
     sudo make install
   popd
   pushd poppler-0.16.2
-    sudo rsync -a goo /usr/local/include/poppler/
+    sudo rsync -a goo/ /usr/local/include/poppler/goo/
     sudo rsync -a poppler/*.h /usr/local/include/poppler/
   popd
 }
