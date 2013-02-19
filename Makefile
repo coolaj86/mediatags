@@ -42,10 +42,10 @@ clean:
 	make clean -C $(PDF_HOME)
 
 release: mediatags
-	mv m4atags linux-x86-bins/
-	mv id3tags linux-x86-bins/
-	mv imgtags linux-x86-bins/
-	mv pdftags linux-x86-bins/
+	mv m4a/build/m4atags linux-x86-bins/
+	mv id3/build/id3tags linux-x86-bins/
+	mv img/build/imgtags linux-x86-bins/
+	mv pdf/build/pdftags linux-x86-bins/
 
 install: release
-	sudo cp -a linux-x86-bins/* /usr/bin/
+	sudo rsync -a linux-x86-bins/* /usr/bin/

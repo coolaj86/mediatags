@@ -11,6 +11,10 @@ sudo apt-get install -y --quiet \
   git-core \
   rsync \
   cmake \
+  libjpeg-dev \
+  zlib1g-dev \
+  libpng12-dev \
+  libopenjpeg-dev \
   libfreetype6 \
   libfreetype6-dev \
   libtool
