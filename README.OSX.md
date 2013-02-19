@@ -1,8 +1,32 @@
 Prereqs
 ===
 
-    brew install hg
-    brew install poppler
+First you must install *XCode* from the *App Store* and
+*Command Line Tools* from <https://developer.apple.com/downloads/>
+
+The rest of the pre-reqs can be installed by the installer script, which can be run like so:
+
+    bash build.osx.sh
+
+Installation
+===
+
+NOTE:
+**UNFORTUNATELY** the installer doesn't automatically handle some known bugs,
+so a few fixes must be applied by hand (as noted in the fixes section).
+
+Once the build tools are installed, you can continue to install the direct dependencies
+of the project with the installer script.
+
+    LDFLAGS="-L/usr/local/Cellar/fontconfig/2.8.0/lib ${LDFLAGS}"
+    CPPFLAGS="-I/usr/local/Cellar/fontconfig/2.8.0/include ${LDFLAGS}"
+    bash build-deps.sh
+
+Assuming all of the dependencies installed correctly,
+you can build the core products and install them like so:
+
+    make mediabox
+    make install
 
 Fixes
 ===
@@ -11,9 +35,8 @@ pdftags / poppler
 ---
 
 Use `build-deps.sh` to download the source for libpoppler (and comment it out once it fails),
-but actually install it using `homebrew` and  to compile poppler rather than using 
+but actually install it using **homebrew** and  to compile poppler rather than using 
 
-    brew install poppler
     LDFLAGS="-L/usr/local/Cellar/fontconfig/2.8.0/lib ${LDFLAGS}"
     CPPFLAGS="-I/usr/local/Cellar/fontconfig/2.8.0/include ${LDFLAGS}"
 
@@ -38,13 +61,6 @@ _Bool has not been declared
     #if defined(const)
     #define __const const
     #endif 
-
-'basename' has not been declared
----
-
-id3/id3tagjson.cpp && m4a/m4atags.cpp;
-
-    #include <libgen.h>
 
 Other Tips
 ---
