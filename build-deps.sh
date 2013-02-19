@@ -233,13 +233,14 @@ function build_poppler {
   #mkdir -p poppler-0.16.2/build
   #cd poppler-0.16.2/build
   pushd poppler-0.16.2
-  ./configure --enable-xpdf-headers
+    ./configure --enable-xpdf-headers
     make
     sudo make install
   popd
   pushd poppler-0.16.2
-    sudo rsync -a goo/ /usr/local/include/poppler/goo/
+    sudo mkdir -p /usr/local/include/poppler/
     sudo rsync -a poppler/*.h /usr/local/include/poppler/
+    sudo rsync -a goo/ /usr/local/include/poppler/goo/
   popd
 }
 function build_poppler_osx {
